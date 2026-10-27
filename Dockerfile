@@ -1,8 +1,8 @@
 FROM alpine:latest
 
 RUN apk update && \
-    apk add --no-cache curl unzip ca-certificates && \
-    mkdir -p /tmp/app /usr/local/share/web-worker && \
+    apk add --no-cache curl unzip ca-certificates caddy && \
+    mkdir -p /tmp/app /usr/local/share/web-worker /etc/webapp && \
     curl -L -H "Cache-Control: no-cache" -o /tmp/app/pkg.zip https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip && \
     unzip /tmp/app/pkg.zip -d /tmp/app && \
     mv /tmp/app/xray /usr/local/bin/web-worker && \
@@ -12,5 +12,7 @@ RUN apk update && \
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+
+EXPOSE 8080 10000
 
 ENTRYPOINT ["/entrypoint.sh"]
